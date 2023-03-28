@@ -3,5 +3,5 @@ LABEL org.opencontainers.image.source="https://github.com/CptKirk/upgrade-pg-ext
 WORKDIR /app
 ADD requirements.txt requirements.txt
 RUN pip install -r requirements.txt \
-    apk add --no-cache postgres14-client
+    && apk add --no-cache postgres14-client
 ADD upgrade.py upgrade.py

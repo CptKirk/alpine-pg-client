@@ -25,4 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/cptkirk/upgrade-pg-extensions:${{ github.ref_name }}
+          tags: ghcr.io/cptkirk/pg-tools:${{ github.ref_name }}

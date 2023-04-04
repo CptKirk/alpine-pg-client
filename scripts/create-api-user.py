@@ -8,7 +8,10 @@ PG_USER = os.getenv("PG_USER")
 PG_PASSWORD = os.getenv("PG_PASSWORD")
 PG_HOST = os.getenv("PG_HOST")
 PG_DBNAME = os.getenv("PG_DBNAME")
-JWT_SECRET = os.getenv("JWT_SECRET")
+
+API_EMAIL = os.getenv("API_EMAIL")
+API_PASSWORD = os.getenv("API_PASSWORD")
+API_ROLE = os.getenv("API_ROLE")
 
 
 def main():
@@ -18,8 +21,11 @@ def main():
         ) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    f"ALTER DATABASE {PG_DBNAME} "
-                    f"SET \"app.jwt_secret\" TO '{JWT_SECRET}'"
+                    "INSERT INTO basic_auth.users (email, password, role) "
+                    f"VALUES ({API_EMAIL}, {API_PASSWORD}, {API_ROLE}) "
+                    "ON CONFLICT (email) DO UPDATE "
+                    "SET password = EXCLUDED.password, "
+                    "role = EXCLUDED.role;"
                 )
     except Exception as e:
         print(
@@ -48,3 +54,6 @@ def main():
             }
         )
     )
+
+
+main()

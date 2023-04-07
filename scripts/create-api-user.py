@@ -21,10 +21,10 @@ def main():
         ) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO basic_auth.users (email, password, role) "
-                    f"VALUES ({API_EMAIL}, {API_PASSWORD}, {API_ROLE}) "
+                    "INSERT INTO basic_auth.users (email, pass, role) "
+                    f"VALUES ('{API_EMAIL}', '{API_PASSWORD}', '{API_ROLE}') "
                     "ON CONFLICT (email) DO UPDATE "
-                    "SET password = EXCLUDED.password, "
+                    "SET pass = EXCLUDED.pass, "
                     "role = EXCLUDED.role;"
                 )
     except Exception as e:
@@ -36,7 +36,7 @@ def main():
                     ).isoformat(),
                     "level": "ERROR",
                     "message": (
-                        f"failed to set jwt secret {e.__class__.__name__}: {e}"
+                        f"failed to create api user {e.__class__.__name__}: {e}"
                     ),
                     "database": PG_DBNAME,
                 }
@@ -49,7 +49,7 @@ def main():
             {
                 "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "level": "INFO",
-                "message": "successfully updated jwt secret",
+                "message": "successfully created api user",
                 "database": PG_DBNAME,
             }
         )

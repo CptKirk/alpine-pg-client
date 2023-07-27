@@ -21,11 +21,15 @@ def main():
         ) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
+                    f"SELECT 1 FROM basic_auth.users WHERE email = {API_EMAIL};",
+                )
+                if cursor.fetchone() is not None:
+                    cursor.execute(
+                        f"DELETE FROM basic_auth.users WHERE email = {API_EMAIL};",
+                    )
+                cursor.execute(
                     "INSERT INTO basic_auth.users (email, pass, role) "
-                    f"VALUES ('{API_EMAIL}', '{API_PASSWORD}', '{API_ROLE}') "
-                    "ON CONFLICT (email) DO UPDATE "
-                    "SET pass = EXCLUDED.pass, "
-                    "role = EXCLUDED.role;"
+                    f"VALUES ('{API_EMAIL}', '{API_PASSWORD}', '{API_ROLE}');"
                 )
     except Exception as e:
         print(

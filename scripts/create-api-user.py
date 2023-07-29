@@ -21,11 +21,11 @@ def main():
         ) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    f"SELECT 1 FROM basic_auth.users WHERE email = {API_EMAIL};",
+                    f"SELECT 1 FROM basic_auth.users WHERE email = '{API_EMAIL}';",
                 )
                 if cursor.fetchone() is not None:
                     cursor.execute(
-                        f"DELETE FROM basic_auth.users WHERE email = {API_EMAIL};",
+                        f"DELETE FROM basic_auth.users WHERE email = '{API_EMAIL}';",
                     )
                 cursor.execute(
                     "INSERT INTO basic_auth.users (email, pass, role) "

@@ -18,8 +18,9 @@ def main():
         ) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    f"ALTER DATABASE {PG_DBNAME} "
-                    f"SET \"app.jwt_secret\" TO '{JWT_SECRET}'"
+                    "INSERT INTO basic_auth.jwt_secret(jwt_secret) "
+                    f"VALUES('{JWT_SECRET}') "
+                    f"ON CONFLICT id DO UPDATE SET jwt_secret = '{JWT_SECRET}';"
                 )
     except Exception as e:
         print(
@@ -30,7 +31,8 @@ def main():
                     ).isoformat(),
                     "level": "ERROR",
                     "message": (
-                        f"failed to set jwt secret {e.__class__.__name__}: {e}"
+                        f"failed to set jwt secret {e.__class__.__name__}: "
+                        f"{str(e).replace(JWT_SECRET, '*'*8)}"
                     ),
                     "database": PG_DBNAME,
                 }

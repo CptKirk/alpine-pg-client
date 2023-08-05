@@ -20,7 +20,7 @@ def main():
                 cursor.execute(
                     "INSERT INTO basic_auth.jwt_secret(jwt_secret) "
                     f"VALUES('{JWT_SECRET}') "
-                    f"ON CONFLICT id DO UPDATE SET jwt_secret = '{JWT_SECRET}';"
+                    f"ON CONFLICT (id) DO UPDATE SET jwt_secret = EXCLUDED.jwt_secret;"
                 )
     except Exception as e:
         print(
